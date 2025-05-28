@@ -1,0 +1,48 @@
+[project]
+name = "ai-news-ignite"
+version = "0.1.0"
+description = "A repository dedicated to collecting the latest AI news and writing them into a standard, structured format. Utilizes LangGraph agents and GitHub Actions for automated, scheduled news collection and summarization."
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "google-api-python-client>=2.170.0",
+    "google-search-results>=2.4.2",
+    "jinja2>=3.1.6",
+    "langchain>=0.3.25",
+    "langchain-community>=0.3.24",
+    "langchain-core>=0.3.62",
+    "langchain-experimental>=0.3.4",
+    "langchain-mcp-adapters>=0.1.1",
+    "langchain-openai>=0.3.18",
+    "langfuse>=2.60.7",
+    "langgraph>=0.4.7",
+    "mcp>=1.9.1",
+    "openai>=1.82.0",
+    "pydantic>=2.11.5",
+    "python-dotenv>=1.1.0",
+]
+
+[dependency-groups]
+dev = [
+    "ipykernel>=6.29.5",
+    "pre-commit>=4.2.0",
+]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+ai_news_ignite = ["*.yaml", "*.j2"]
+
+
+
+[build-system]
+requires = [
+    "setuptools>=67.0",  # or higher, depending on your project needs
+    "wheel"              # include wheel to support building .whl distributions
+]
+build-backend = "setuptools.build_meta"
+
