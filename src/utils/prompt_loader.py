@@ -78,6 +78,7 @@ class PromptLoader:
             loader=FileSystemLoader(str(prompts_dir)),
             trim_blocks=True,
             lstrip_blocks=True,
+            enable_async=True,
             autoescape=self._select_autoescape
         )
 
