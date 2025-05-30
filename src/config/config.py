@@ -3,7 +3,7 @@ from pydantic import BaseModel, Field, field_validator, ValidationError
 from pathlib import Path
 import yaml
 
-config_path = Path(__file__).parent / "config.yaml"
+config_path = Path(__file__).parent.parent.parent / "config.yaml"
 
 class OpenAIModelConfig(BaseModel):
     """Configuration for the main GPT model."""
@@ -24,10 +24,31 @@ class OpenAISearchToolConfig(BaseModel):
         values["extra"] = extra
         return values
 
+class AgentConfig(BaseModel):
+    name: str
+    prompt_key: str
+    model: str
+    debug: Optional[bool] = False
+
+class AgentsConfig(BaseModel):
+    search_and_summarise: AgentConfig
+    github_assistant: AgentConfig
+    supervisor: AgentConfig
+
+class ToolGithubConfig(BaseModel):
+    docker_image: str
+    env_var_key: str
+    transport: str
+
+class ToolConfig(BaseModel):
+    github: ToolGithubConfig
+    openai_search_tools: OpenAISearchToolConfig
+
 class Config(BaseModel):
     """Main configuration object loaded from YAML."""
     gpt_model: OpenAIModelConfig
-    openai_search_tools: OpenAISearchToolConfig
+    agents: AgentsConfig
+    tool: ToolConfig
     # Add more fields for other services as needed
 
     @classmethod
