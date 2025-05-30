@@ -10,7 +10,7 @@ repos:
     rev: 1.8.5
     hooks:
       - id: nbqa-ruff
-        args: ["--fix", "--ignore=E402"]
+        args: ["--fix", "--ignore=E402,F704"]
         files: ^notebook/.*\.ipynb$
 
   - repo: https://github.com/kynan/nbstripout
