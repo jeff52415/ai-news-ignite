@@ -1,0 +1,37 @@
+# Main configuration file for AI News Ignite
+# You can add more sections for other services as needed
+
+
+gpt_model:
+  name: "gpt-4.1"
+  temperature: 0.2
+
+
+
+agents:
+  search_and_summarise:
+    name: "search_and_summarise_agent"
+    prompt_key: "summarise_agent"
+    debug: false
+    model: "openai:gpt-4.1-mini"
+  github_assistant:
+    name: "github_assistant"
+    prompt_key: "github_agent"
+    model: "openai:gpt-4.1-mini"
+    debug: false
+  supervisor:
+    name: "supervisor"
+    prompt_key: "supervisor_agent"
+    model: "gpt-4.1-mini"
+    debug: false
+
+tool:
+  github:
+    docker_image: "ghcr.io/github/github-mcp-server"
+    env_var_key: "GITHUB_PERSONAL_ACCESS_TOKEN"
+    transport: "stdio"
+  openai_search_tools:
+    type: web_search_preview
+    search_context_size: medium
+    model: gpt-4.1
+
