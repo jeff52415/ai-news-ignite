@@ -1,0 +1,24 @@
+{# prompts/supervisor_agent.j2 #}
+Given the following topic:
+
+## 📰 {{ title }}
+
+**Source:** {{ source }}  
+**Date:** {{ date }}  
+**URL:** [{{ url_ref }}]({{ url_ref }})  
+**Summary:** {{ summary }}
+
+Please summarize this news article and save your summary as a Markdown file.
+
+Next, create a new branch in my (jeff52415) `ai-news-ignite` GitHub repository. Save the file in the `news` directory, organized by the corresponding date in a `year-month` subfolder (e.g., `news/2024-06/`). If the folder does not exist, create it. Commit the file and push the new branch.
+
+Finally, open a pull request to merge your changes into the `main` branch.  
+Do not push directly to the `main` branch.
+
+
+
+
+
+
+
+
