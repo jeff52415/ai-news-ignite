@@ -1,9 +1,9 @@
 import os
 from typing import List, Any
-from src.config.config import Config
+from config.config import Config
 
 # Optional: for MCP GitHub agent
-async def get_github_tools() -> List[Any]:
+async def get_github_tools(specific_tool: list[str] | None = None) -> List[Any]:
     """Async function to get GitHub tools from MCP server."""
     try:
         from langchain_mcp_adapters.client import MultiServerMCPClient
@@ -32,6 +32,11 @@ async def get_github_tools() -> List[Any]:
             }
         }
     )
-    return await client.get_tools()
+    # Ex. get_file_contents
+    if specific_tool:
+        tools = await client.get_tools()
+        return [tool for tool in tools if tool.name in specific_tool]
+    else:
+        return await client.get_tools()
 
 # Usage: tools = await get_github_tools()
