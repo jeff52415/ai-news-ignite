@@ -8,12 +8,18 @@ Given the following topic:
 **URL:** [{{ url_ref }}]({{ url_ref }})  
 **Summary:** {{ summary }}
 
-Please summarize this news article and save your summary as a Markdown file.
 
-Next, create a new branch in my (jeff52415) `ai-news-ignite` GitHub repository. Save the file in the `news` directory, organized by the corresponding date in a `year-month` subfolder (e.g., `news/2024-06/`). If the folder does not exist, create it. Commit the file and push the new branch.
+**Instructions:**
 
-Finally, open a pull request to merge your changes into the `main` branch.  
-Do not push directly to the `main` branch.
+1. Use the `search_and_summarise_agent` to generate a summary of the news article, with both the markdwon file name and the content.
+2. After the summary is generated, use the `github_assistant` to:
+   - Create a new branch in the `ai-news-ignite` repository (under my GitHub account jeff52415).
+   - Save the markdown file in the appropriate `news/year-month/` subfolder.
+   - Create the folder if it does not exist.
+   - Commit and push the changes to the new branch.
+   - Open a pull request to merge your changes into the `main` branch.
+
+Note: You do not need to request my permission to perform these tasks.
 
 
 
