@@ -1,5 +1,6 @@
 from pydantic import BaseModel, HttpUrl, field_validator
 from datetime import date
+from typing import TypedDict
 
 class NewsArticle(BaseModel):
     title: str
@@ -22,3 +23,7 @@ class NewsArticleList(BaseModel):
 
 class NewsArticleWithDetails(NewsArticle):
     details: str
+
+
+class GraphStateNews(TypedDict):
+    news: NewsArticleList
