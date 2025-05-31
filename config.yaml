@@ -9,6 +9,11 @@ gpt_model:
 
 
 agents:
+  initial_search:
+    name: "initial_search_agent"
+    prompt_key: "search_agent"
+    debug: false
+    model: "openai:gpt-4.1-mini"
   search_and_summarise:
     name: "search_and_summarise_agent"
     prompt_key: "summarise_agent"
@@ -31,7 +36,7 @@ tool:
     env_var_key: "GITHUB_PERSONAL_ACCESS_TOKEN"
     transport: "stdio"
   openai_search_tools:
-    type: web_search_preview
-    search_context_size: medium
-    model: gpt-4.1
+    type: "web_search_preview"
+    search_context_size: "medium"
+    model: "gpt-4.1-mini"
 

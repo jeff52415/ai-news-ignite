@@ -5,10 +5,7 @@ import yaml
 
 config_path = Path(__file__).parent.parent.parent / "config.yaml"
 
-class OpenAIModelConfig(BaseModel):
-    """Configuration for the main GPT model."""
-    name: str
-    temperature: float = 0.2
+
 
 class OpenAISearchToolConfig(BaseModel):
     """Configuration for a tool, extensible for extra fields."""
@@ -31,6 +28,7 @@ class AgentConfig(BaseModel):
     debug: Optional[bool] = False
 
 class AgentsConfig(BaseModel):
+    initial_search: AgentConfig
     search_and_summarise: AgentConfig
     github_assistant: AgentConfig
     supervisor: AgentConfig
@@ -46,7 +44,6 @@ class ToolConfig(BaseModel):
 
 class Config(BaseModel):
     """Main configuration object loaded from YAML."""
-    gpt_model: OpenAIModelConfig
     agents: AgentsConfig
     tool: ToolConfig
     # Add more fields for other services as needed
