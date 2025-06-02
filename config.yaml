@@ -1,13 +1,6 @@
 # Main configuration file for AI News Ignite
 # You can add more sections for other services as needed
 
-
-gpt_model:
-  name: "gpt-4.1"
-  temperature: 0.2
-
-
-
 agents:
   initial_search:
     name: "initial_search_agent"
