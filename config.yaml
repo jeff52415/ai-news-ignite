@@ -12,7 +12,7 @@ env:
     host: "${LANGFUSE_HOST}"
 
 app:
-  input_message: "Start searching for news about the latest trends in AI and machine learning. Provide maximum 2 articles."
+  input_message: "Start searching for news about the latest trends in AI and machine learning. Provide maximum 3 articles."
   debug: true
 
 agents:

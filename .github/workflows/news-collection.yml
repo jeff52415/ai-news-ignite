@@ -2,6 +2,8 @@ name: AI News Collection
 
 on:
   workflow_dispatch: # Manual trigger only
+  schedule:
+    - cron: '0 0 * * 2,5'  # Runs at 00:00 UTC on Tuesday (2) and Friday (5)
 
 jobs:
   collect-news:
