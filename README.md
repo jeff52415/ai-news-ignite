@@ -1,3 +1,65 @@
-# AI News Ignite
+# AI News Ignite 🤖📰
 
-A repository dedicated to collecting the latest AI news and writing them into a standard, structured format. Utilizes LangGraph agents and GitHub Actions for automated, scheduled news collection and summarization.
+[![Python](https://img.shields.io/badge/Python-3.9+-blue.svg)](https://www.python.org)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![LangGraph](https://img.shields.io/badge/LangGraph-Enabled-orange.svg)](https://github.com/langchain-ai/langgraph)
+
+> Automated collection and summarization of the latest AI news using LangGraph agents and GitHub Actions.
+
+## ✨ Features
+
+- 🤖 Automated AI news collection and summarization using LangGraph
+
+## 🔄 Flow
+
+The system follows a LangGraph-based workflow:
+
+1. **Search News** - Fetch latest AI/ML news articles
+2. **Filter News** - Remove duplicate and irrelevant articles
+3. **Map Articles** - Process each article in parallel
+4. **Summarize & Publish** - Generate summaries and prepare for publication
+5. **Collect Results** - Aggregate all processed articles
+
+## 🚀 Setup
+
+1. **Clone** the repository
+   ```bash
+   git clone https://github.com/yourusername/ai-news-ignite.git
+   cd ai-news-ignite
+   ```
+
+2. **Configure** environment variables:
+   ```bash
+   # Required
+   OPENAI_API_KEY=your_openai_key
+   GITHUB_PERSONAL_ACCESS_TOKEN=your_github_token
+
+   # Optional - for monitoring
+   LANGFUSE_SECRET_KEY=your_langfuse_secret
+   LANGFUSE_PUBLIC_KEY=your_langfuse_public
+   LANGFUSE_HOST=your_langfuse_host
+   ```
+
+3. **Install** dependencies:
+   ```bash
+   uv sync
+   ```
+
+4. **Run** the application:
+   ```bash
+   uv run python app.py
+   ```
+
+## ⚙️ Configuration
+
+All configuration settings are managed in `config.yaml`. The system includes regular updates via GitHub Actions.
+
+## 📊 Monitoring
+
+With Langfuse integration (optional), you can track all operations and performance metrics through the Langfuse dashboard.
+
+---
+
+<div align="center">
+Made with ❤️ by AI News Ignite Team
+</div>

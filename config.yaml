@@ -1,6 +1,16 @@
 # Main configuration file for AI News Ignite
 # You can add more sections for other services as needed
 
+env:
+  openai:
+    api_key: "${OPENAI_API_KEY}"
+  github:
+    token: "${GITHUB_PERSONAL_ACCESS_TOKEN}"
+  langfuse:
+    secret_key: "${LANGFUSE_SECRET_KEY}"
+    public_key: "${LANGFUSE_PUBLIC_KEY}"
+    host: "${LANGFUSE_HOST}"
+
 agents:
   initial_search:
     name: "initial_search_agent"
@@ -26,7 +36,6 @@ agents:
 tool:
   github:
     docker_image: "ghcr.io/github/github-mcp-server"
-    env_var_key: "GITHUB_PERSONAL_ACCESS_TOKEN"
     transport: "stdio"
   openai_search_tools:
     type: "web_search_preview"

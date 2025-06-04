@@ -9,9 +9,15 @@ async def get_github_tools(specific_tool: list[str] | None = None) -> List[Any]:
         from langchain_mcp_adapters.client import MultiServerMCPClient
     except ImportError:
         raise ImportError("langchain_mcp_adapters is required for the GitHub agent.")
+    
     config = Config.load()
     github_cfg = config.tool.github
-    env_var_value = os.getenv(github_cfg.env_var_key)
+    github_token = config.env.get_env_value(config.env.github['token'])
+    github_env_var = config.env.github['token'].replace('${', '').replace('}', '')
+    
+    if not github_token:
+        raise EnvironmentError("GitHub token not found in environment variables")
+    
     client = MultiServerMCPClient(
         {
             "github": {
@@ -21,11 +27,11 @@ async def get_github_tools(specific_tool: list[str] | None = None) -> List[Any]:
                     "-i",
                     "--rm",
                     "-e",
-                    github_cfg.env_var_key,
+                    github_env_var,
                     github_cfg.docker_image
                 ],
                 "env": {
-                    github_cfg.env_var_key: env_var_value,
+                    github_env_var: github_token,
                     **os.environ,
                 },
                 "transport": github_cfg.transport,

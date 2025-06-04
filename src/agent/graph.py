@@ -3,10 +3,10 @@ from typing import Annotated
 from pydantic import BaseModel, Field
 from langgraph.graph import StateGraph, START, END
 from langgraph.types import Send
-from langfuse.callback import CallbackHandler
 from agent.agents import AgentFactory
 from utils import prompt_loader
 from data_model.news import NewsArticleList, NewsArticle
+from config.config import Config
 
 # --- State Definition ---
 
@@ -19,7 +19,8 @@ class NewsGraphState(BaseModel):
 
 # --- Callback and Agent Factory ---
 
-langfuse_handler = CallbackHandler()
+config = Config.load()
+langfuse_handler = config.env.get_langfuse_handler()
 agent_factory = AgentFactory()
 
 # --- Node Definitions ---
@@ -76,7 +77,7 @@ async def collect_results(state: NewsGraphState):
     # or could perform additional aggregation if needed.
     return {"finished": True} # The accumulator already has them
 
-def build_news_graph():
+def build_news_graph(debug: bool = False):
     # reference: https://langchain-ai.github.io/langgraph/how-tos/graph-api/#map-reduce-and-the-send-api
     builder = StateGraph(NewsGraphState)
     builder.add_node("search_news", search_news)
@@ -101,4 +102,4 @@ def build_news_graph():
 
 
 
-    return builder.compile()
+    return builder.compile(debug=debug)
