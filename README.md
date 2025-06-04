@@ -1,6 +1,6 @@
 # AI News Ignite 🤖📰
 
-[![Python](https://img.shields.io/badge/Python-3.9+-blue.svg)](https://www.python.org)
+[![Python](https://img.shields.io/badge/Python-3.13+-blue.svg)](https://www.python.org)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![LangGraph](https://img.shields.io/badge/LangGraph-Enabled-orange.svg)](https://github.com/langchain-ai/langgraph)
 
@@ -9,6 +9,7 @@
 ## ✨ Features
 
 - 🤖 Automated AI news collection and summarization using LangGraph
+- 📰 Continuously updated news articles in the `news` folder
 
 ## 🔄 Flow
 
@@ -20,6 +21,8 @@ The system follows a LangGraph-based workflow:
 4. **Summarize & Publish** - Generate summaries and prepare for publication
 5. **Collect Results** - Aggregate all processed articles
 
+All processed news articles are automatically saved in the `news` folder, which is continuously updated through GitHub Actions.
+
 ## 🚀 Setup
 
 1. **Clone** the repository
@@ -29,6 +32,12 @@ The system follows a LangGraph-based workflow:
    ```
 
 2. **Configure** environment variables:
+   
+   You can configure the required variables either through:
+   - Local `.env` file for development
+   - GitHub repository secrets for automated runs
+
+   Required variables:
    ```bash
    # Required
    OPENAI_API_KEY=your_openai_key

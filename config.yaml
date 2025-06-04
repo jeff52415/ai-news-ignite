@@ -11,6 +11,10 @@ env:
     public_key: "${LANGFUSE_PUBLIC_KEY}"
     host: "${LANGFUSE_HOST}"
 
+app:
+  input_message: "Start searching for news about the latest trends in AI and machine learning. Provide maximum 2 articles."
+  debug: true
+
 agents:
   initial_search:
     name: "initial_search_agent"

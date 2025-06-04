@@ -90,11 +90,17 @@ class EnvConfig(BaseModel):
         from langfuse.callback import CallbackHandler
         return CallbackHandler()
 
+class AppConfig(BaseModel):
+    """Configuration for application settings."""
+    input_message: str
+    debug: bool = True
+
 class Config(BaseModel):
     """Main configuration object loaded from YAML."""
     env: EnvConfig
     agents: AgentsConfig
     tool: ToolConfig
+    app: AppConfig
 
     @classmethod
     def load(cls, path: str = config_path) -> "Config":

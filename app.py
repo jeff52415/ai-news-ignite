@@ -15,10 +15,10 @@ async def main():
     langfuse_handler = config.env.get_langfuse_handler()
     
     # Build and execute graph
-    graph = build_news_graph(debug=True)
+    graph = build_news_graph(debug=config.app.debug)
     
     initial_state = {
-        "input_message": "Start searching for news about the latest trends in AI and machine learning. Provide maximum 2 articles.",
+        "input_message": config.app.input_message,
         "news": None,
         "article": None,
         "results": []
