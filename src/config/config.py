@@ -65,7 +65,7 @@ class EnvConfig(BaseModel):
             
         # Check GitHub token
         if not self.get_env_value(self.github['token']):
-            missing_vars.append('GITHUB_PERSONAL_ACCESS_TOKEN')
+            missing_vars.append('GIT_PERSONAL_ACCESS_TOKEN')
             
         if missing_vars:
             raise EnvironmentError(

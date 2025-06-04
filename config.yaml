@@ -5,7 +5,7 @@ env:
   openai:
     api_key: "${OPENAI_API_KEY}"
   github:
-    token: "${GITHUB_PERSONAL_ACCESS_TOKEN}"
+    token: "${GIT_PERSONAL_ACCESS_TOKEN}"
   langfuse:
     secret_key: "${LANGFUSE_SECRET_KEY}"
     public_key: "${LANGFUSE_PUBLIC_KEY}"
