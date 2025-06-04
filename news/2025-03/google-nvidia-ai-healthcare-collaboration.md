@@ -1,5 +1,3 @@
----
-
 ## 📰 Google and NVIDIA Collaborate to Accelerate AI in Healthcare
 
 **Source:** mlinsider.com  
@@ -7,7 +5,6 @@
 **URL:** [https://cloud.google.com/blog/products/ai-machine-learning/accelerate-ai-in-healthcare-nvidia-bionemo-gke?utm_source=openai](https://cloud.google.com/blog/products/ai-machine-learning/accelerate-ai-in-healthcare-nvidia-bionemo-gke?utm_source=openai)  
 **Summary:** Google Cloud and NVIDIA are partnering to speed up drug discovery and development by leveraging NVIDIA BioNeMo framework and Google Kubernetes Engine to provide powerful infrastructure and tools for medical and pharmaceutical researchers.
 
----
 
 ### 🔹 What Happened
 
