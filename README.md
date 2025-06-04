@@ -67,6 +67,8 @@ All configuration settings are managed in `config.yaml`. The system includes reg
 
 With Langfuse integration (optional), you can track all operations and performance metrics through the Langfuse dashboard.
 
+![Langfuse Tracing Example](resource/tracing.png)
+
 ---
 
 <div align="center">
