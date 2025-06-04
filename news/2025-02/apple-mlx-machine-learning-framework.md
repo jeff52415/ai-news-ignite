@@ -1,5 +1,4 @@
-## 
-Apple Launches MLX: A Machine Learning Framework Optimized for Apple Silicon
+## Apple Launches MLX: A Machine Learning Framework Optimized for Apple Silicon
 
 **Source:** mlinsider.com  
 **Date:** 2025-02-14  
