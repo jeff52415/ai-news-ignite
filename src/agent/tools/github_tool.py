@@ -13,7 +13,6 @@ async def get_github_tools(specific_tool: list[str] | None = None) -> List[Any]:
     config = Config.load()
     github_cfg = config.tool.github
     github_token = config.env.get_env_value(config.env.github['token'])
-    github_env_var = config.env.github['token'].replace('${', '').replace('}', '')
     
     if not github_token:
         raise EnvironmentError("GitHub token not found in environment variables")
@@ -27,11 +26,11 @@ async def get_github_tools(specific_tool: list[str] | None = None) -> List[Any]:
                     "-i",
                     "--rm",
                     "-e",
-                    github_env_var,
+                    "GITHUB_PERSONAL_ACCESS_TOKEN",
                     github_cfg.docker_image
                 ],
                 "env": {
-                    github_env_var: github_token,
+                    "GITHUB_PERSONAL_ACCESS_TOKEN": github_token,
                     **os.environ,
                 },
                 "transport": github_cfg.transport,
