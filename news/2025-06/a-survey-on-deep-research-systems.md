@@ -1,4 +1,4 @@
-##  A Comprehensive Survey of Deep Research: Systems, Methodologies, and Applications
+## A Comprehensive Survey of Deep Research: Systems, Methodologies, and Applications
 
 **Source:** arXiv  
 **Date:** June 14, 2025  
