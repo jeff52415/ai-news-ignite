@@ -1,4 +1,4 @@
-## OpenAI Secures $200 Million U.S. Defense Contract
+## OpenAI Secures $200 Million U.S. Defense Contract
 
 **Source:** Reuters  
 **Date:** 2025-06-16  
