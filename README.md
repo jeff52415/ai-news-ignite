@@ -1,76 +1,65 @@
-# AI News Ignite 🤖📰
+# AI News Ignite
 
 [![Python](https://img.shields.io/badge/Python-3.13+-blue.svg)](https://www.python.org)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![LangGraph](https://img.shields.io/badge/LangGraph-Enabled-orange.svg)](https://github.com/langchain-ai/langgraph)
 
-> Automated collection and summarization of the latest AI news using LangGraph agents and GitHub Actions.
+Automated technical intelligence briefings for LLM engineers. A LangGraph workflow searches recent AI engineering work, keeps items with a public artifact and real technical substance, and opens a pull request for each briefing under `news/`.
 
-## ✨ Features
+## Flow
 
-- 🤖 Automated AI news collection and summarization using LangGraph
-- 📰 Continuously updated news articles in the `news` folder
+1. **Search** the last 7 days, widening to 30 days only when fewer than 5 items qualify.
+2. **Filter** items already covered in `news/`, unless the new item is a substantial technical update.
+3. **Verify and rank** against primary sources. Ranking uses technical significance, not popularity.
+4. **Summarize and publish** each surviving item on its own branch and pull request.
+5. **Collect** the drafted briefings.
 
-## 🔄 Flow
+Each briefing has: What Changed, Why It Matters, Evidence, Links, and Assessment. GitHub star counts appear only when they were read from GitHub.
 
-The system follows a LangGraph-based workflow:
+## Setup
 
-1. **Search News** - Fetch latest AI/ML news articles
-2. **Filter News** - Remove duplicate and irrelevant articles
-3. **Map Articles** - Process each article in parallel
-4. **Summarize & Publish** - Generate summaries and prepare for publication
-5. **Collect Results** - Aggregate all processed articles
+1. Clone the repository and install dependencies. Docker must be running; the GitHub steps use the GitHub MCP server.
 
-All processed news articles are automatically saved in the `news` folder, which is continuously updated through GitHub Actions.
-
-## 🚀 Setup
-
-1. **Clone** the repository
    ```bash
-   git clone https://github.com/yourusername/ai-news-ignite.git
+   git clone https://github.com/jeff52415/ai-news-ignite.git
    cd ai-news-ignite
-   ```
-
-2. **Configure** environment variables:
-   
-   You can configure the required variables either through:
-   - Local `.env` file for development
-   - GitHub repository secrets for automated runs
-
-   Required variables:
-   ```bash
-   # Required
-   OPENAI_API_KEY=your_openai_key
-   GITHUB_PERSONAL_ACCESS_TOKEN=your_github_token
-
-   # Optional - for monitoring
-   LANGFUSE_SECRET_KEY=your_langfuse_secret
-   LANGFUSE_PUBLIC_KEY=your_langfuse_public
-   LANGFUSE_HOST=your_langfuse_host
-   ```
-
-3. **Install** dependencies:
-   ```bash
    uv sync
    ```
 
-4. **Run** the application:
+2. Create a fine-grained personal access token for `jeff52415/ai-news-ignite` with:
+
+   - **Contents:** Read and write
+   - **Pull requests:** Read and write
+
+   Pull request access alone cannot create the branch or commit the file.
+
+3. Configure environment variables in `.env` for local runs, and as repository secrets for GitHub Actions:
+
+   ```bash
+   # Required
+   OPENAI_API_KEY=your_openai_key
+   GIT_PERSONAL_ACCESS_TOKEN=your_github_token
+
+   # Optional - tracing
+   LANGFUSE_SECRET_KEY=your_langfuse_secret
+   LANGFUSE_PUBLIC_KEY=your_langfuse_public
+   LANGFUSE_HOST=https://cloud.langfuse.com
+   ```
+
+   The app reads `GIT_PERSONAL_ACCESS_TOKEN`. Langfuse 5 prefers `LANGFUSE_BASE_URL`, and still accepts `LANGFUSE_HOST`. This project turns tracing on only when `LANGFUSE_HOST` is set. Use the same URL for both if you set both.
+
+4. Run:
+
    ```bash
    uv run python app.py
    ```
 
-## ⚙️ Configuration
+## Configuration
 
-All configuration settings are managed in `config.yaml`. The system includes regular updates via GitHub Actions.
+Search windows, finding limits, models, and prompts are set in `config.yaml`. GitHub Actions runs the same command on Tuesday and Friday at 00:00 UTC, and on manual dispatch.
 
-## 📊 Monitoring
+## Monitoring
 
-With Langfuse integration (optional), you can track all operations and performance metrics through the Langfuse dashboard.
+When the Langfuse variables are set, traces are sent to the Langfuse dashboard.
 
 ![Langfuse Tracing Example](resource/tracing.png)
-
----
-
-<div align="center">
-Made with ❤️ by AI News Ignite Team
-</div>
