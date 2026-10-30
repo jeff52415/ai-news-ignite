@@ -46,14 +46,14 @@ def select_findings(
     articles: list[NewsArticle],
     *,
     today: date | None = None,
-    primary_window_days: int = 7,
+    primary_window_days: int = 14,
     fallback_window_days: int = 30,
     min_findings: int = 5,
     max_findings: int = 10,
 ) -> list[NewsArticle]:
-    """Keep items that pass the gate, prefer the last 7 days, then rank.
+    """Keep items that pass the gate, prefer the primary window, then rank.
 
-    The 30-day window is used only when the last 7 days do not yield
+    The fallback window is used only when the primary window does not yield
     ``min_findings`` qualifying items. The result can be shorter than
     ``min_findings`` when the longer window is also thin.
     """

@@ -4,14 +4,14 @@
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![LangGraph](https://img.shields.io/badge/LangGraph-Enabled-orange.svg)](https://github.com/langchain-ai/langgraph)
 
-Automated technical intelligence briefings for LLM engineers. A LangGraph workflow searches recent AI engineering work, keeps items with a public artifact and real technical substance, and opens a pull request for each briefing under `news/`.
+Automated technical intelligence briefings for LLM engineers. A LangGraph workflow searches recent AI engineering work, keeps items with a public artifact and real technical substance, and publishes each briefing by opening a pull request and merging it into `main`.
 
 ## Flow
 
-1. **Search** the last 7 days, widening to 30 days only when fewer than 5 items qualify.
+1. **Search** the last 14 days, widening to 30 days only when fewer than 5 items qualify.
 2. **Filter** items already covered in `news/`, unless the new item is a substantial technical update.
 3. **Verify and rank** against primary sources. Ranking uses technical significance, not popularity.
-4. **Summarize and publish** each surviving item on its own branch and pull request.
+4. **Summarize and publish** each surviving item: open a pull request, then merge it into `main`.
 5. **Collect** the drafted briefings.
 
 Each briefing has: What Changed, Why It Matters, Evidence, Links, and Assessment. GitHub star counts appear only when they were read from GitHub.
@@ -31,7 +31,7 @@ Each briefing has: What Changed, Why It Matters, Evidence, Links, and Assessment
    - **Contents:** Read and write
    - **Pull requests:** Read and write
 
-   Pull request access alone cannot create the branch or commit the file.
+   Contents writes the branch. Pull requests opens the pull request and merges it.
 
 3. Configure environment variables in `.env` for local runs, and as repository secrets for GitHub Actions:
 

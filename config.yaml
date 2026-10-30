@@ -19,7 +19,7 @@ app:
     significance. Return between the configured minimum and maximum, and return
     fewer when the window does not contain enough qualifying work.
   debug: true
-  primary_window_days: 7
+  primary_window_days: 14
   fallback_window_days: 30
   min_findings: 5
   max_findings: 10

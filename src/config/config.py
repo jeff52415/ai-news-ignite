@@ -112,7 +112,7 @@ class AppConfig(BaseModel):
     """Configuration for application settings."""
     input_message: str
     debug: bool = True
-    primary_window_days: int = 7
+    primary_window_days: int = 14
     fallback_window_days: int = 30
     min_findings: int = 5
     max_findings: int = 10
