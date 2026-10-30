@@ -105,7 +105,7 @@ class EnvConfig(BaseModel):
         if missing_vars:
             return None
             
-        from langfuse.callback import CallbackHandler
+        from langfuse.langchain import CallbackHandler
         return CallbackHandler()
 
 class AppConfig(BaseModel):
