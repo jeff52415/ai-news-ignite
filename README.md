@@ -26,12 +26,16 @@ Each briefing has: What Changed, Why It Matters, Evidence, Links, and Assessment
    uv sync
    ```
 
-2. Create a fine-grained personal access token for `jeff52415/ai-news-ignite` with:
+2. Create a fine-grained personal access token at [github.com/settings/personal-access-tokens/new](https://github.com/settings/personal-access-tokens/new). On that form, set:
 
-   - **Contents:** Read and write
-   - **Pull requests:** Read and write
+   - **Resource owner:** your GitHub account
+   - **Repository access:** Only select repositories → `jeff52415/ai-news-ignite`
+   - **Repository permissions:**
+     - **Metadata:** Read-only (GitHub requires this)
+     - **Contents:** Read and write
+     - **Pull requests:** Read and write
 
-   Contents writes the branch. Pull requests opens the pull request and merges it.
+   Contents creates the branch and commits the briefing. Pull requests opens the pull request and merges it. A token with Pull requests write and no Contents write can read the repo but fails with `403 Resource not accessible by personal access token` when creating the branch. Fine-grained tokens cannot be edited after creation; generate a new token and replace `GIT_PERSONAL_ACCESS_TOKEN` if a permission is missing.
 
 3. Configure environment variables in `.env` for local runs, and as repository secrets for GitHub Actions:
 

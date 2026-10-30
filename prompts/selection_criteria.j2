@@ -15,7 +15,7 @@ Cover only these areas:
 1. **Algorithms & architectures** — LLM architecture, reasoning, reinforcement learning, attention, memory, training methods, test-time scaling.
 2. **Model releases** — frontier or open-weight models that are actually downloadable or callable. Architecture, efficiency, license, and what an engineer can do with them.
 3. **Agentic AI & harnesses** — orchestration, planning, context engineering, memory, self-correction, tool use, execution loops, verification, autonomous coding systems.
-4. **Inference & infrastructure** — quantization, speculative decoding, KV-cache, serving engines (SGLang, vLLM, and peers), GPU efficiency, throughput, and latency.
+4. **Inference & infrastructure** — quantization, speculative decoding, KV-cache, serving engines, GPU kernels, throughput, and latency.
 5. **Trending GitHub repositories** — fast-growing projects whose code contains a technique worth reading. Star count is context, not the reason to include the repo.
 6. **Technical interviews** — a researcher or engineer explaining a concrete mechanism or implementation. Skip interviews that stay at the level of product vision.
 
@@ -47,12 +47,18 @@ Cover only these areas:
 
 ## Ranking
 
-Rank by technical significance for this audience: novelty of the mechanism, strength of the evidence, and usefulness for agents, evaluation, inference, or production infrastructure. Do not rank by stars, social media, or which lab announced it.
+Rank by technical significance for this audience: novelty of the mechanism, strength of the evidence, and usefulness for agents, evaluation, inference, or production infrastructure. Do not rank by stars, social media, or which lab announced it. 
+
+## Spread
+
+Search each area with equal effort.
+
+Keep at most two items whose main mechanism belongs to the same project. A model release stays under model releases when the weights or the API are the contribution, even if a serving guide is the page you opened.
 
 ## Search conduct
 
 - Run a separate search for each area. Do not run one query for "AI news".
 - Open the primary page before accepting a hit. Record the date from that page.
-- Prefer GitHub, Hugging Face model cards, official technical reports, release notes, vLLM and SGLang releases, and engineering write-ups.
+- Prefer GitHub, Hugging Face model cards, official technical reports, release notes, serving-engine releases, and engineering write-ups from any project.
 - If a number is not on a primary page, leave it out. Never guess star counts, benchmark scores, or dates.
 - Every link you emit must be a URL you actually opened.

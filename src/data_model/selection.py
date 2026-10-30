@@ -2,7 +2,7 @@
 
 from datetime import date, timedelta
 
-from data_model.news import EvidenceKind, Level, NewsArticle, Novelty, TechnicalArea
+from data_model.news import EvidenceKind, Level, NewsArticle, Novelty
 
 NOVELTY_WEIGHT = {
     Novelty.fundamental: 5,
@@ -19,26 +19,14 @@ EVIDENCE_WEIGHT = {
     EvidenceKind.technical_explanation: 2,
     EvidenceKind.developer_reported: 1,
 }
-# Slight preference for the audience: agents, inference, and new mechanisms.
-AREA_WEIGHT = {
-    TechnicalArea.algorithms_architectures: 1,
-    TechnicalArea.agentic_ai: 1,
-    TechnicalArea.inference_infrastructure: 1,
-    TechnicalArea.model_releases: 0,
-    TechnicalArea.trending_github: 0,
-    TechnicalArea.technical_interviews: 0,
-}
-
-
 def significance_score(article: NewsArticle) -> int:
-    """Higher means more worth an engineer's time. Star count is not an input."""
+    """Higher means more worth an engineer's time. Star count and topic are not inputs."""
     score = NOVELTY_WEIGHT[article.novelty] * 3
     score += LEVEL_WEIGHT[article.practical_significance] * 2
     score += LEVEL_WEIGHT[article.confidence]
     score += EVIDENCE_WEIGHT[article.evidence_kind]
     if article.independently_validated:
         score += 3
-    score += AREA_WEIGHT[article.area]
     return score
 
 
