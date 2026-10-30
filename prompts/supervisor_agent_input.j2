@@ -1,30 +1,41 @@
-{# prompts/supervisor_agent.j2 #}
-Given the following topic:
+Write and publish one briefing section for this dossier.
 
-## 📰 {{ title }}
-
-**Source:** {{ source }}  
-**Date:** {{ date }}  
-**URL:** [{{ url_ref }}]({{ url_ref }})  
+**Rank:** {{ rank }}
+**Name:** {{ title }}
+**Area:** {{ area_label }}
+**Source:** {{ source }}
+**Release date:** {{ date }}
+**Primary URL:** {{ url }}
+**Availability:** {{ availability }}
 **Summary:** {{ summary }}
 
+**What changed:** {{ what_changed }}
 
-**Instructions:**
+**Why it matters:** {{ why_it_matters }}
 
-1. Use the `search_and_summarise_agent` to generate a summary of the news article, with both the markdwon file name and the content.
-2. After the summary is generated, use the `github_assistant` to:
-   - Create a new branch in the `ai-news-ignite` repository (under my GitHub account jeff52415).
-   - Save the markdown file in the appropriate `news/year-month/` subfolder.
-   - Create the folder if it does not exist.
-   - Commit and push the changes to the new branch.
-   - Open a pull request to merge your changes into the `main` branch.
+**Evidence kind:** {{ evidence_label }}
+**Independently validated:** {{ independently_validated }}
+**Evidence:** {{ evidence }}
 
-Note: You do not need to request my permission to perform these tasks.
+**Novelty:** {{ novelty }}
+**Practical significance:** {{ practical_significance }}
+**Confidence:** {{ confidence }}
 
+**Links:**
+{% for link in links %}
+- {{ link.title }} | {{ link.kind }} | {{ link.url }}
+{% endfor %}
 
+**GitHub stars:** {{ github_stars }}
+**Recent growth:** {{ github_recent_growth }}
+**Technical ideas:**
+{% for idea in technical_ideas %}
+- {{ idea }}
+{% endfor %}
 
+Instructions:
 
+1. Use `search_and_summarise_agent` to verify the dossier and write the markdown section, including the file name.
+2. Use `github_assistant` to create a branch in jeff52415/ai-news-ignite, save the file under `news/<year>-<month>/`, commit, push, and open a pull request into `main`. Create the folder if it does not exist.
 
-
-
-
+Do not ask for permission.

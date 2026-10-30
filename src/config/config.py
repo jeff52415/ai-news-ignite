@@ -1,5 +1,5 @@
 from typing import Optional, Dict, Any
-from pydantic import BaseModel, Field, field_validator, ValidationError
+from pydantic import BaseModel, Field, ValidationError
 from pathlib import Path
 import yaml
 import os
@@ -8,19 +8,37 @@ config_path = Path(__file__).parent.parent.parent / "config.yaml"
 
 
 
+class ReasoningConfig(BaseModel):
+    """Responses API reasoning setting for the research model."""
+    effort: Optional[str] = None
+
+
 class OpenAISearchToolConfig(BaseModel):
-    """Configuration for a tool, extensible for extra fields."""
+    """Hosted web search plus the model that runs the research pass.
+
+    The tool payload sent to OpenAI is only `type`, `search_context_size`,
+    and `external_web_access`. `model`, `reasoning`, and `include` are applied
+    to the research chat model. `tool_choice` is not forced, because the agent
+    still has to return the structured briefing after it finishes searching.
+    `return_token_budget` is accepted so the YAML stays valid; the current
+    web_search tool has no such field.
+    """
     type: str
     search_context_size: Optional[str] = None
     model: Optional[str] = None
-    extra: Dict[str, Any] = Field(default_factory=dict)
+    external_web_access: Optional[bool] = None
+    return_token_budget: Optional[str] = None
+    tool_choice: Optional[str] = None
+    include: list[str] = Field(default_factory=list)
+    reasoning: Optional[ReasoningConfig] = None
 
-    @field_validator("extra")
-    def collect_extra(cls, values):
-        allowed = {"type", "search_context_size", "model"}
-        extra = {k: v for k, v in values.items() if k not in allowed}
-        values["extra"] = extra
-        return values
+    def as_tool(self) -> Dict[str, Any]:
+        tool: Dict[str, Any] = {"type": self.type}
+        if self.search_context_size:
+            tool["search_context_size"] = self.search_context_size
+        if self.external_web_access is not None:
+            tool["external_web_access"] = self.external_web_access
+        return tool
 
 class AgentConfig(BaseModel):
     name: str
@@ -94,6 +112,10 @@ class AppConfig(BaseModel):
     """Configuration for application settings."""
     input_message: str
     debug: bool = True
+    primary_window_days: int = 7
+    fallback_window_days: int = 30
+    min_findings: int = 5
+    max_findings: int = 10
 
 class Config(BaseModel):
     """Main configuration object loaded from YAML."""

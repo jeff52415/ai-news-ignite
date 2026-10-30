@@ -24,15 +24,19 @@ async def main():
         "results": []
     }
     
+    callbacks = [langfuse_handler] if langfuse_handler else []
     result = await graph.ainvoke(
         initial_state,
-        config={"callbacks": [langfuse_handler], "recursion_limit": 200}
+        config={"callbacks": callbacks, "recursion_limit": 200}
     )
     
     # Print results
-    print("\nResults:")
-    for idx, result in enumerate(result["results"], 1):
-        print(f"\n{idx}. {result}")
+    print("\nAI Technical Intelligence Briefing")
+    findings = result["results"]
+    if not findings:
+        print("\nNo developments met the selection criteria in this window.")
+    for idx, finding in enumerate(findings, 1):
+        print(f"\n{idx}. {finding}")
 
 if __name__ == "__main__":
     asyncio.run(main()) 

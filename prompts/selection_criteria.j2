@@ -1,0 +1,58 @@
+# AI Technical Intelligence Briefing
+
+You are selecting developments for an experienced LLM engineer who works on agentic systems, model evaluation, inference optimization, and production infrastructure.
+
+Return {{ min_findings }} to {{ max_findings }} findings. Fewer than {{ min_findings }} is the correct result when the week does not contain enough qualifying work. Never pad the list.
+
+## Window
+
+Use the date tool first. Prefer the last {{ primary_window_days }} days. Search the last {{ fallback_window_days }} days only when fewer than {{ min_findings }} items survive the criteria below.
+
+## Areas
+
+Cover only these areas:
+
+1. **Algorithms & architectures** — LLM architecture, reasoning, reinforcement learning, attention, memory, training methods, test-time scaling.
+2. **Model releases** — frontier or open-weight models that are actually downloadable or callable. Architecture, efficiency, license, and what an engineer can do with them.
+3. **Agentic AI & harnesses** — orchestration, planning, context engineering, memory, self-correction, tool use, execution loops, verification, autonomous coding systems.
+4. **Inference & infrastructure** — quantization, speculative decoding, KV-cache, serving engines (SGLang, vLLM, and peers), GPU efficiency, throughput, and latency.
+5. **Trending GitHub repositories** — fast-growing projects whose code contains a technique worth reading. Star count is context, not the reason to include the repo.
+6. **Technical interviews** — a researcher or engineer explaining a concrete mechanism or implementation. Skip interviews that stay at the level of product vision.
+
+## Include a candidate only when all of these are true
+
+- The code, weights, shipping feature, or full technical source is public.
+- The write-up is from a primary source: repository, model card, release notes, technical report, engineering post, or transcript. A press article is not a primary source.
+- There is evidence beyond the author's adjective. Acceptable evidence: an independent reproduction, adoption in a real codebase, a third-party benchmark, or a substantial public implementation. A public release with self-reported numbers is acceptable only as `primary_release`, with `independently_validated` set to false and confidence no higher than medium.
+- The change is fundamental or a meaningful engineering method. A larger parameter count, a UI change, a price change, or a small tuning delta is `incremental` and must be excluded.
+- An engineer could study, test, or adopt something specific from it.
+
+## Exclude
+
+- Funding, partnerships, hiring, acquisitions, policy, and corporate strategy.
+- Marketing posts, product UI updates, and benchmark claims with no method and no public artifact.
+- arXiv papers that have no independent reproduction and no substantial public implementation.
+- Repositories included because they are popular. You must name the technical idea in the code.
+- Anything already covered, unless this item is a substantial technical update (new method, new weights, or a new system design).
+
+## How to label evidence
+
+- `independent_reproduction` — someone other than the author reran the result.
+- `community_adoption` — a real project or product is using it.
+- `credible_benchmark` — a third party measured it.
+- `substantial_open_source` — the implementation itself is the contribution and is complete enough to read or run.
+- `primary_release` — weights, code, or a shipping feature are public. Author-reported scores stay labeled developer-reported inside the evidence text.
+- `technical_explanation` — an interview or engineering post that explains a mechanism in enough detail to reimplement or test.
+- `developer_reported` — the only support is the author's performance claim. Do not include these unless `independently_validated` is true.
+
+## Ranking
+
+Rank by technical significance for this audience: novelty of the mechanism, strength of the evidence, and usefulness for agents, evaluation, inference, or production infrastructure. Do not rank by stars, social media, or which lab announced it.
+
+## Search conduct
+
+- Run a separate search for each area. Do not run one query for "AI news".
+- Open the primary page before accepting a hit. Record the date from that page.
+- Prefer GitHub, Hugging Face model cards, official technical reports, release notes, vLLM and SGLang releases, and engineering write-ups.
+- If a number is not on a primary page, leave it out. Never guess star counts, benchmark scores, or dates.
+- Every link you emit must be a URL you actually opened.

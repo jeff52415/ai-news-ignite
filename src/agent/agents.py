@@ -38,17 +38,51 @@ class AgentFactory:
         """Return a list of available agent names."""
         return list(config.agents.model_dump().keys())
     
-    async def get_initial_search_agent(self, response_format: BaseModel = NewsArticleList) -> CompiledStateGraph:
-        agent_cfg = self._agent_cfg.initial_search
-        search_tool = {
-            "type": config.tool.openai_search_tools.type,
-            "search_context_size": config.tool.openai_search_tools.search_context_size,
+    def _window_context(self) -> dict:
+        app = config.app
+        return {
+            "primary_window_days": app.primary_window_days,
+            "fallback_window_days": app.fallback_window_days,
+            "min_findings": app.min_findings,
+            "max_findings": app.max_findings,
         }
-        initial_search_prompt = await prompt_loader.get_prompt(agent_cfg.prompt_key).template.render_async()
+
+    def _research_model(self, fallback_model: str) -> ChatOpenAI:
+        """Chat model for search and verification.
+
+        Uses the hosted-search model from config when one is set, and turns on
+        the Responses API so web_search, reasoning, and source includes work.
+        """
+        search_cfg = config.tool.openai_search_tools
+        model_name = search_cfg.model or fallback_model
+        if model_name.startswith("openai:"):
+            model_name = model_name.split(":", 1)[1]
+        kwargs = {
+            "model": model_name,
+            "use_responses_api": True,
+            "output_version": "responses/v1",
+        }
+        if search_cfg.include:
+            kwargs["include"] = list(search_cfg.include)
+        if search_cfg.reasoning and search_cfg.reasoning.effort:
+            kwargs["reasoning"] = {"effort": search_cfg.reasoning.effort}
+        return ChatOpenAI(**kwargs)
+
+    async def get_initial_search_agent(
+        self,
+        response_format: BaseModel = NewsArticleList,
+        prompt_key: str | None = None,
+    ) -> CompiledStateGraph:
+        agent_cfg = self._agent_cfg.initial_search
+        search_tool = config.tool.openai_search_tools.as_tool()
+        key = prompt_key or agent_cfg.prompt_key
+        initial_search_prompt = await prompt_loader.get_prompt(key).template.render_async(
+            **self._window_context()
+        )
         if self.verbose:
             print(f"Initial search prompt: {initial_search_prompt}")
         initial_search_agent = create_react_agent(
-            model=agent_cfg.model,
+            model=self._research_model(agent_cfg.model),
             tools=[get_current_date, search_tool],
             debug=agent_cfg.debug,
             prompt=initial_search_prompt,
@@ -61,10 +95,7 @@ class AgentFactory:
         agent_cfg = self._agent_cfg.search_and_summarise
         summary_prompt = prompt_loader.get_prompt(agent_cfg.prompt_key)
         summarised_prompt = await summary_prompt.template.render_async()
-        search_tool = {
-            "type": config.tool.openai_search_tools.type,
-            "search_context_size": config.tool.openai_search_tools.search_context_size,
-        }
+        search_tool = config.tool.openai_search_tools.as_tool()
         if self.verbose:
             print(f"Search and summarise prompt: {summarised_prompt}")
             print(f"Response format: {response_format}")

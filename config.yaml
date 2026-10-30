@@ -12,37 +12,56 @@ env:
     host: "${LANGFUSE_HOST}"
 
 app:
-  input_message: "Begin researching the latest trends in AI and machine learning. Prioritize articles that are truly impactful, and limit the selection to 5."
+  input_message: >
+    Research developments for an AI technical intelligence briefing aimed at an
+    LLM engineer working on agents, evaluation, inference, and production
+    infrastructure. Follow your selection criteria. Rank by technical
+    significance. Return between the configured minimum and maximum, and return
+    fewer when the window does not contain enough qualifying work.
   debug: true
+  primary_window_days: 7
+  fallback_window_days: 30
+  min_findings: 5
+  max_findings: 10
 
 agents:
   initial_search:
     name: "initial_search_agent"
     prompt_key: "search_agent"
     debug: false
-    model: "openai:gpt-4.1-mini"
+    model: "openai:gpt-6.1-terra"
   search_and_summarise:
     name: "search_and_summarise_agent"
     prompt_key: "summarise_agent"
     debug: false
-    model: "openai:gpt-4.1-mini"
+    model: "openai:gpt-6.1-terra"
   github_assistant:
     name: "github_assistant"
     prompt_key: "github_agent"
-    model: "openai:gpt-4.1-mini"
+    model: "openai:gpt-6.1-terra"
     debug: false
   supervisor:
     name: "supervisor"
     prompt_key: "supervisor_agent"
-    model: "gpt-4.1-mini"
+    model: "gpt-6.1-terra"
     debug: false
 
 tool:
   github:
     docker_image: "ghcr.io/github/github-mcp-server"
     transport: "stdio"
+  # model, reasoning, and include configure the research model.
+  # type, search_context_size, and external_web_access are sent on the web_search tool.
+  # tool_choice is not forced: the agent must still emit structured findings after searching.
+  # return_token_budget is retained but not sent; web_search has no such parameter.
   openai_search_tools:
-    type: "web_search_preview"
-    search_context_size: "medium"
-    model: "gpt-4.1-mini"
-
+    model: "gpt-6.1-terra"
+    type: "web_search"
+    reasoning:
+      effort: "medium"
+    search_context_size: "high"
+    external_web_access: true
+    return_token_budget: "default"
+    tool_choice: "required"
+    include:
+      - "web_search_call.action.sources"

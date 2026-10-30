@@ -1,6 +1,51 @@
-## 📰 {{ title }}
+# {{ title }}
 
-**Source**: {{ source }}  
-**Date**: {{ date }}  
-**URL**: [{{ url_ref }}]({{ url_ref }})
-**Summary**: {{ summary }}
+**Rank:** {{ rank }}
+**Release date:** {{ date }}
+**Area:** {{ area_label }}
+**Primary source:** {{ source }}
+**Availability:** {{ availability }}
+
+## What Changed
+
+{{ what_changed }}
+
+## Why It Matters
+
+{{ why_it_matters }}
+
+## Evidence
+
+**Kind:** {{ evidence_label }}
+**Independently validated:** {{ independently_validated }}
+
+{{ evidence }}
+
+## Links
+
+{% for link in links %}
+- [{{ link.title }}]({{ link.url }}) ({{ link.kind }})
+{% endfor %}
+
+## Assessment
+
+- **Technical novelty:** {{ novelty }}
+- **Practical significance:** {{ practical_significance }}
+- **Confidence:** {{ confidence }}
+
+{% if github_stars or github_recent_growth or technical_ideas %}
+## GitHub signal
+
+{% if github_stars is not none %}
+**Stars:** {{ github_stars }}
+{% endif %}
+{% if github_recent_growth %}
+**Recent growth:** {{ github_recent_growth }}
+{% endif %}
+{% if technical_ideas %}
+**Ideas worth investigating:**
+{% for idea in technical_ideas %}
+- {{ idea }}
+{% endfor %}
+{% endif %}
+{% endif %}
