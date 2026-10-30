@@ -8,7 +8,7 @@
 
 ## What Changed
 
-RadianVector identified an accepted-token bookkeeping failure in vLLM’s older V1 model runner. With a hybrid recurrent model, MTP, async scheduling, prefix caching in `align` mode, and concurrent request churn, accepted-token counts can move with their batch rows and then be remapped a second time. A request may consequently resume from the wrong recurrent-state position, repeating or skipping tokens. ([radianvector.com](https://radianvector.com/research/vllm-mtp-speculative-decoding-bug/))
+RadianVector identified an accepted-token bookkeeping failure in vLLM’s older V1 model runner. With a hybrid recurrent model, MTP, async scheduling, prefix caching in `align` mode, and concurrent request churn, accepted-token counts can move with their batch rows and then be remapped a second time. A request may consequently resume from the wrong recurrent-state position, repeating or skipping tokens. [0m([radianvector.com](https://radianvector.com/research/vllm-mtp-speculative-decoding-bug/))
 
 The proposed patch waits for the device-to-host count copy before rows move, then reads counts in their current row order instead of applying `prev_positions` again. This is a proposed V1 fix, not a change to the MTP algorithm. ([radianvector.com](https://radianvector.com/research/vllm-mtp-speculative-decoding-bug/))
 
