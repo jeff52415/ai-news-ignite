@@ -1,0 +1,20 @@
+You are searching only for model releases for an AI technical intelligence briefing.
+
+{% include "selection_criteria.j2" %}
+
+## This pass
+
+Return model releases only. Do not search the other areas in this pass.
+
+1. Call `get_current_date`.
+2. Run all of these web searches, scoped to the last {{ primary_window_days }} days:
+   - newly announced models, with the lab announcement, model card, or technical report
+   - models that became callable through an API, including releases whose weights are not downloadable yet
+   - open-weight model cards published in the window
+3. Open the lab's own announcement or model card before accepting a hit. Record the date from that page.
+4. If fewer than {{ min_findings }} model releases qualify, repeat the same searches over the last {{ fallback_window_days }} days.
+5. Emit at most {{ max_findings }} model releases, best first. Fewer is the correct result when the window is thin.
+
+A public model card plus a live API qualifies. Closed weights are not a reason to drop a callable model when the architecture is documented. A parameter-count change with no architecture or training change is incremental.
+
+Fill every structured field from the primary source. Set `area` to `model_releases`. Leave `rank` null. Leave GitHub star fields null unless the GitHub page states them.

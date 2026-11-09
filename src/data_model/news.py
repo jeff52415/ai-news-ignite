@@ -157,7 +157,10 @@ class NewsArticle(BaseModel):
         )
     )
     publicly_available: bool = Field(
-        description="True only if code, weights, a shipping feature, or the full technical source is public."
+        description=(
+            "True when code, weights, a shipping feature, or the full technical source is public. "
+            "A callable model with a public model card counts while weights are still closed."
+        )
     )
     independently_validated: bool = Field(
         description=(

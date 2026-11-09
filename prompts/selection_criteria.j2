@@ -13,7 +13,7 @@ Use the date tool first. Prefer the last {{ primary_window_days }} days. Search 
 Cover only these areas:
 
 1. **Algorithms & architectures** — LLM architecture, reasoning, reinforcement learning, attention, memory, training methods, test-time scaling.
-2. **Model releases** — frontier or open-weight models that are actually downloadable or callable. Architecture, efficiency, license, and what an engineer can do with them.
+2. **Model releases** — frontier or open-weight models that are downloadable or callable. A public model card and a live API count while weights are still closed. Record architecture, efficiency, license, and what an engineer can do with them.
 3. **Agentic AI & harnesses** — orchestration, planning, context engineering, memory, self-correction, tool use, execution loops, verification, autonomous coding systems.
 4. **Inference & infrastructure** — quantization, speculative decoding, KV-cache, serving engines, GPU kernels, throughput, and latency.
 5. **Trending GitHub repositories** — fast-growing projects whose code contains a technique worth reading. Star count is context, not the reason to include the repo.
@@ -21,10 +21,10 @@ Cover only these areas:
 
 ## Include a candidate only when all of these are true
 
-- The code, weights, shipping feature, or full technical source is public.
+- The code, weights, shipping feature, or full technical source is public. A callable model with a public model card is a shipping feature.
 - The write-up is from a primary source: repository, model card, release notes, technical report, engineering post, or transcript. A press article is not a primary source.
 - There is evidence beyond the author's adjective. Acceptable evidence: an independent reproduction, adoption in a real codebase, a third-party benchmark, or a substantial public implementation. A public release with self-reported numbers is acceptable only as `primary_release`, with `independently_validated` set to false and confidence no higher than medium.
-- The change is fundamental or a meaningful engineering method. A larger parameter count, a UI change, a price change, or a small tuning delta is `incremental` and must be excluded.
+- The change is fundamental or a meaningful engineering method. A larger parameter count, a UI change, a price change, or a small tuning delta is `incremental` and must be excluded. A new model generation with a documented architecture or training change is not incremental merely because the parameter count changed.
 - An engineer could study, test, or adopt something specific from it.
 
 ## Exclude

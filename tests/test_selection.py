@@ -86,12 +86,12 @@ def test_self_reported_release_cannot_keep_high_confidence():
 
 def test_recent_window_is_preferred_when_it_is_full():
     recent = [
-        article(title=f"recent-{index}", url=f"https://example.com/r{index}")
+        article(title=f"recent-{index}", url=f"https://lab{index}.example/r{index}")
         for index in range(5)
     ]
     older = article(
         title="older fundamental",
-        url="https://example.com/old",
+        url="https://older.example/old",
         date=TODAY - timedelta(days=20),
         novelty=Novelty.fundamental,
     )
@@ -101,10 +101,10 @@ def test_recent_window_is_preferred_when_it_is_full():
 
 
 def test_older_items_fill_a_thin_week_and_rank_by_significance():
-    recent = article(title="recent meaningful", url="https://example.com/recent")
+    recent = article(title="recent meaningful", url="https://recent.example/item")
     older = article(
         title="older fundamental",
-        url="https://example.com/old",
+        url="https://older.example/item",
         date=TODAY - timedelta(days=20),
         novelty=Novelty.fundamental,
         evidence_kind=EvidenceKind.independent_reproduction,
@@ -112,7 +112,7 @@ def test_older_items_fill_a_thin_week_and_rank_by_significance():
     )
     quiet = article(
         title="older quiet",
-        url="https://example.com/quiet",
+        url="https://quiet.example/item",
         date=TODAY - timedelta(days=18),
         novelty=Novelty.meaningful,
         practical_significance=Level.medium,
@@ -136,6 +136,51 @@ def test_trending_repo_without_a_technical_idea_is_rejected():
     assert select_findings([item], today=TODAY) == []
 
 
+def test_one_site_cannot_fill_the_list():
+    flood = [
+        article(title=f"blog-{index}", url=f"https://blog.engine.example/post-{index}")
+        for index in range(2)
+    ] + [
+        article(title=f"root-{index}", url=f"https://engine.example/post-{index}")
+        for index in range(2)
+    ]
+    other = article(
+        title="other project",
+        url="https://other.example/release",
+        practical_significance=Level.medium,
+    )
+    chosen = select_findings(flood + [other], today=TODAY)
+    titles = [item.title for item in chosen]
+    assert sum(title.startswith(("blog-", "root-")) for title in titles) == 2
+    assert "other project" in titles
+
+
+def test_model_release_keeps_a_slot_when_the_list_is_full():
+    fillers = [
+        article(
+            title=f"filler-{index}",
+            url=f"https://lab{index}.example/item",
+            novelty=Novelty.fundamental,
+            evidence_kind=EvidenceKind.independent_reproduction,
+            confidence=Level.high,
+        )
+        for index in range(10)
+    ]
+    release = article(
+        title="callable model",
+        url="https://lab.example/news/model",
+        area=TechnicalArea.model_releases,
+        evidence_kind=EvidenceKind.primary_release,
+        independently_validated=False,
+        confidence=Level.medium,
+        novelty=Novelty.meaningful,
+        practical_significance=Level.medium,
+    )
+    chosen = select_findings(fillers + [release], today=TODAY, max_findings=10)
+    assert len(chosen) == 10
+    assert any(item.title == "callable model" for item in chosen)
+
+
 def test_stale_and_future_items_are_rejected():
     stale = article(date=TODAY - timedelta(days=31), url="https://example.com/stale")
     future = article(date=TODAY + timedelta(days=1), url="https://example.com/future")
@@ -150,5 +195,7 @@ if __name__ == "__main__":
     test_recent_window_is_preferred_when_it_is_full()
     test_older_items_fill_a_thin_week_and_rank_by_significance()
     test_trending_repo_without_a_technical_idea_is_rejected()
+    test_one_site_cannot_fill_the_list()
+    test_model_release_keeps_a_slot_when_the_list_is_full()
     test_stale_and_future_items_are_rejected()
     print("selection tests passed")

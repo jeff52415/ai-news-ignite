@@ -1,3 +1,4 @@
+import asyncio
 import json
 import operator
 from datetime import date
@@ -50,13 +51,44 @@ def _as_article(article: NewsArticle | dict) -> NewsArticle:
 
 # --- Node Definitions ---
 
+async def _run_search(prompt_key: str, message: str) -> list[NewsArticle]:
+    """Run one search pass. A failed pass returns nothing so the other pass still publishes."""
+    try:
+        agent = await agent_factory.get_initial_search_agent(prompt_key=prompt_key)
+        response = await agent.ainvoke(
+            {"messages": [{"role": "user", "content": message}]},
+        )
+    except Exception as exc:
+        print(f"Search pass {prompt_key} failed: {exc}")
+        return []
+    structured = response.get("structured_response") if isinstance(response, dict) else None
+    articles = getattr(structured, "articles", None)
+    if articles is None and isinstance(structured, dict):
+        articles = structured.get("articles", [])
+    return [_as_article(article) for article in articles or []]
+
+
+def _merge_articles(*groups: list[NewsArticle]) -> list[NewsArticle]:
+    """Model releases come first. Later duplicates of the same URL are dropped."""
+    merged: list[NewsArticle] = []
+    seen: set[str] = set()
+    for group in groups:
+        for article in group:
+            key = article.url.rstrip("/").lower()
+            if key in seen:
+                continue
+            seen.add(key)
+            merged.append(article)
+    return merged
+
+
 async def search_news(state: NewsGraphState):
-    """Fetch candidate developments that match the briefing criteria."""
-    agent = await agent_factory.get_initial_search_agent()
-    response = await agent.ainvoke(
-        {"messages": [{"role": "user", "content": state.input_message}]},
+    """Fetch candidates, with a separate pass that looks only for model releases."""
+    releases, general = await asyncio.gather(
+        _run_search("model_release_search", state.input_message),
+        _run_search("search_agent", state.input_message),
     )
-    return {"news": response["structured_response"]}
+    return {"news": NewsArticleList(articles=_merge_articles(releases, general))}
 
 async def filter_news(state: NewsGraphState):
     """Drop candidates the repository already covers. Keep the surviving dossiers intact."""

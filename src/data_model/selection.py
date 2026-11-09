@@ -1,8 +1,12 @@
 """Rank briefing candidates by technical significance, not popularity."""
 
 from datetime import date, timedelta
+from urllib.parse import urlparse
 
-from data_model.news import EvidenceKind, Level, NewsArticle, Novelty
+from data_model.news import EvidenceKind, Level, NewsArticle, Novelty, TechnicalArea, host_of
+
+# One site can contribute several posts in a week. Keep the list from collapsing onto it.
+MAX_PER_PROJECT = 2
 
 NOVELTY_WEIGHT = {
     Novelty.fundamental: 5,
@@ -19,6 +23,22 @@ EVIDENCE_WEIGHT = {
     EvidenceKind.technical_explanation: 2,
     EvidenceKind.developer_reported: 1,
 }
+
+
+def project_key(article: NewsArticle) -> str:
+    """Group pages from one site. GitHub and Hugging Face group by owner."""
+    host = host_of(article.url)
+    parts = [part for part in urlparse(article.url).path.split("/") if part]
+    if host == "github.com" and parts:
+        return f"github.com/{parts[0].lower()}"
+    if host in {"huggingface.co", "hf.co"} and parts:
+        return f"{host}/{parts[0].lower()}"
+    labels = host.split(".")
+    if len(labels) >= 2:
+        return ".".join(labels[-2:])
+    return host
+
+
 def significance_score(article: NewsArticle) -> int:
     """Higher means more worth an engineer's time. Star count and topic are not inputs."""
     score = NOVELTY_WEIGHT[article.novelty] * 3
@@ -68,7 +88,33 @@ def select_findings(
         ranked.append(copy)
     ranked.sort(key=lambda article: (significance_score(article), article.date), reverse=True)
 
-    chosen = ranked[:max_findings]
+    chosen: list[NewsArticle] = []
+    counts: dict[str, int] = {}
+    for article in ranked:
+        key = project_key(article)
+        if counts.get(key, 0) >= MAX_PER_PROJECT:
+            continue
+        chosen.append(article)
+        counts[key] = counts.get(key, 0) + 1
+        if len(chosen) == max_findings:
+            break
+
+    # A qualifying model release keeps a slot when other projects would otherwise fill the list.
+    if not any(article.area == TechnicalArea.model_releases for article in chosen):
+        release = next(
+            (article for article in ranked if article.area == TechnicalArea.model_releases),
+            None,
+        )
+        if release is not None and counts.get(project_key(release), 0) < MAX_PER_PROJECT:
+            if len(chosen) < max_findings:
+                chosen.append(release)
+            elif chosen:
+                chosen[-1] = release
+            chosen.sort(
+                key=lambda article: (significance_score(article), article.date),
+                reverse=True,
+            )
+
     for index, article in enumerate(chosen, start=1):
         article.rank = index
     return chosen
