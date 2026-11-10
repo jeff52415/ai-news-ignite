@@ -4,7 +4,7 @@
 **Release date:** 2026-11-02  
 **Area:** Inference & Infrastructure  
 **Primary source:** vLLM  
-**Availability:** Public source and PyPI wheels. The GitHub release is titled v0.33.0 but points to `v0.33.0rc3`; verify the source tag and wheel before deployment. ([github.com](https://github.com/vllm-project/vllm/releases/tag/v0.33.0rc3))
+**Availability:** Public source and PyPI wheels. The GitHub release is titled v0.33.0 but points to `v0.33.0rc3`; verify the source tag and wheel before deployment. 1010 ([github.com](https://github.com/vllm-project/vllm/releases/tag/v0.33.0rc3))
 
 ## What Changed
 
